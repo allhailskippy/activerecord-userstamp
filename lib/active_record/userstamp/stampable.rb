@@ -80,9 +80,9 @@ module ActiveRecord::Userstamp::Stampable
       klass = stamper_class.try(:name)
       relation_options = options.reverse_merge(class_name: klass)
 
-      belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute) if
+      belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute, optional: true) if
         associations.first
-      belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute) if
+      belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute, optional: true) if
         associations.second
       belongs_to :deleter, relation_options.reverse_merge(foreign_key: config.deleter_attribute, optional: true) if
         associations.third
