@@ -14,7 +14,7 @@ module ActiveRecord::Userstamp::Stampable
     before_validation :set_updater_attribute, if: :record_userstamp
     before_validation :set_creator_attribute, on: :create, if: :record_userstamp
     before_save :set_updater_attribute, if: :record_userstamp
-    before_save :set_creator_attribute, on: :create, if: :record_userstamp
+    before_create :set_creator_attribute, if: :record_userstamp
     before_destroy :set_deleter_attribute, if: :record_userstamp
   end
 
@@ -110,7 +110,7 @@ module ActiveRecord::Userstamp::Stampable
 
     updater_association = self.class.reflect_on_association(:updater)
     return unless updater_association
-    return if !new_record? && !changed?
+    return if !new_record? && !saved_changes?
 
     ActiveRecord::Userstamp::Utilities.assign_stamper(self, updater_association)
   end
